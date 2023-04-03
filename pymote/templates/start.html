@@ -21,6 +21,7 @@
                 {% endfor %}
                 <td>
                     <form action="/toggle-gadget" method="post">
+                        <input type="hidden" name="index" value="{{ index }}">
                         <input type="hidden" name="gadget" value="{{ row[0] }}">
                         <button type="submit">Toggle</button>
                     </form>
@@ -34,6 +35,6 @@
         };
     </script>
 
-    <p>Your Account: {{ name }}</p>
+    <p>Current User: {{ name }}</p>
 </body>
 </html>

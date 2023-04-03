@@ -13,9 +13,13 @@
     </select>
     <h1>Change your account settings</h1>
     <p>Aviable options:</p>
-
+    <p>Delet Account {{ name }} </p>
+    <form action="/account" method="post">
+        <input type="hidden" name="{{ name }}" value="{{ name }}">
+        <button type="submit">Delete Account</button>
+    </form>
     <script>
-        document.getElementById("link").onchange = function() {
+        document.getElementById("link").onchange = function () {
             window.location.href = this.value;
         };
     </script>
