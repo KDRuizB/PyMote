@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start</title>
+</head>
+<body>
+    <select id="link">
+        <option value="#">--OPTIONS--</option>
+        <option value="http://127.0.0.1:5000/start">Start</option>
+        <option value="http://127.0.0.1:5000/gadgets">Gadgets</option>
+        <option value="http://127.0.0.1:5000/account">Account</option>
+        <option value="http://127.0.0.1:5000/login">Logout</option>
+    </select>
+    <h1>All important things on one Site</h1>
+    <p>Added Gadgets:</p>
+
+    <script>
+        document.getElementById("link").onchange = function() {
+            window.location.href = this.value;
+        };
+    </script>
+</body>
+</html>
