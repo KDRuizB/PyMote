@@ -13,11 +13,27 @@
     </select>
     <h1>All important things on one Site</h1>
     <p>Added Gadgets:</p>
-
+        <table>
+            {% for row in data %}
+            <tr>
+                {% for col in row %}
+                <td>{{ col }}</td>
+                {% endfor %}
+                <td>
+                    <form action="/toggle-gadget" method="post">
+                        <input type="hidden" name="gadget" value="{{ row[0] }}">
+                        <button type="submit">Toggle</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     <script>
-        document.getElementById("link").onchange = function() {
+        document.getElementById("link").onchange = function () {
             window.location.href = this.value;
         };
     </script>
+
+    <p>Your Account: {{ name }}</p>
 </body>
 </html>

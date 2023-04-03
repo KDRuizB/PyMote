@@ -14,18 +14,6 @@
     <h1>Add or delet Gadgets and turn them on/off</h1>
     <p>Your Gadgets:</p>
 
-    <script>
-        document.getElementById("link").onchange = function () {
-            window.location.href = this.value;
-        };
-    </script>
-
-    <form action="/gadgets" method="post">
-        <label for="gadget">New Item:</label>
-        <input type="text" name="gadget" id="gadget">
-        <button type="submit">Add</button>
-    </form>
-
     <table>
         {% for row in data %}
         <tr>
@@ -37,14 +25,21 @@
                     <input type="hidden" name="gadget" value="{{ row[0] }}">
                     <button type="submit">Delete</button>
                 </form>
-                <form action="/toggle-gadget" method="post">
-                    <input type="hidden" name="gadget" value="{{ row[0] }}">
-                    <input type="hidden" name="status" value="{{ row[1] }}">
-                    <button type="submit">{{ "Turn On" if row[1] == "Off" else "Turn Off" }}</button>
-                </form>
             </td>
         </tr>
         {% endfor %}
     </table>
+
+    <script>
+        document.getElementById("link").onchange = function () {
+            window.location.href = this.value;
+        };
+    </script>
+
+    <form action="/gadgets" method="post">
+        <label for="gadget">New Item:</label>
+        <input type="text" name="gadget" id="gadget">
+        <button type="submit">Add</button>
+    </form>
 </body>
 </html>

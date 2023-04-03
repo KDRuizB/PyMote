@@ -34,7 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="templates\account.html" />
-    <Content Include="templates\delet-gadget.html" />
+    <Content Include="templates\delete-gadget.html" />
     <Content Include="templates\gadgets.html" />
     <Content Include="templates\login.html" />
     <Content Include="templates\register.html" />

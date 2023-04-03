@@ -1,3 +1,4 @@
+from cmath import e
 from flask import Flask, render_template, request, redirect, url_for
 import csv
     
@@ -68,7 +69,27 @@ def register():
 # only visual stuff
 @app.route('/start', methods=["GET", "POST"])
 def start():
-    return render_template("start.html")
+    try:
+        # current data in csv file Profile
+        current_user = currentUser[0]
+        user_csv_key = f"{current_user}.csv"
+        with open(user_csv_key, 'r') as f:
+                reader = csv.reader(f)
+                next(reader) # skipp the heading of the csv file
+                data = [row for row in reader]
+
+        if request.method == "POST":
+            # update CSV file with new data
+            with open(user_csv_key, "a", newline="") as f:
+                writer = csv.writer(f)
+                gadget = request.form['gadget']
+                writer.writerow([gadget, "Off"])
+            # redirect to GET handler to display updated CSV data
+            return redirect('/start')
+
+        return render_template("start.html", data=data, name=current_user)
+    except IndexError:
+       return render_template("login.html")
 
 # delet and add gadgets / turn on or off
 @app.route('/gadgets', methods=["GET", "POST"])
@@ -80,6 +101,7 @@ def gadgets():
 
         with open(user_csv_key, 'r') as f:
             reader = csv.reader(f)
+            next(reader) # skip the heading row of the csv file
             data = [row for row in reader]
 
         if request.method == "POST":
@@ -92,7 +114,7 @@ def gadgets():
                 with open(user_csv_key, 'r') as f:
                     reader = csv.reader(f)
                     data = [row for row in reader]
-            return render_template("gadgets.html", data=data)
+            return redirect("/gadgets")
 
         # data is the user profile csv content
         return render_template("gadgets.html", data=data)
@@ -127,8 +149,8 @@ def delet():
         with open(user_csv_key, 'w', newline='') as f:
             writer = csv.writer(f)
             writer.writerows(data)
-            return render_template("gadgets.html")
-    return render_template("delet-gadget.html")
+            return redirect("/gadgets")
+    return render_template("delete-gadget.html")
 
 
 
