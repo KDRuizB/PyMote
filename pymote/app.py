@@ -73,21 +73,64 @@ def start():
 # delet and add gadgets / turn on or off
 @app.route('/gadgets', methods=["GET", "POST"])
 def gadgets():
-    # get the user's csv file
-    current_user = currentUser[0]
-    user_csv_key = f"{current_user}.csv"
-    if request.method == "POST":
-        with open(user_csv_key, "a", newline="") as f:
-            writer = csv.writer(f)
-            # save new gadget in a csv file
-            gadget = request.form['gadget']
-            writer.writerow([gadget])
+    try:
+        # get the user's csv file
+        current_user = currentUser[0]
+        user_csv_key = f"{current_user}.csv"
+
+        with open(user_csv_key, 'r') as f:
+            reader = csv.reader(f)
+            data = [row for row in reader]
+
+        if request.method == "POST":
+            with open(user_csv_key, "a", newline="") as f:
+                writer = csv.writer(f)
+                # save new gadget in a csv file
+                gadget = request.form['gadget']
+                writer.writerow([gadget, "Off"])
          
-    with open(user_csv_key, 'r') as f:
-        reader = csv.reader(f)
-        item = [row[0] for row in reader]
-        return render_template("gadgets.html", item=item)
-    return render_template("gadgets.html")
+                with open(user_csv_key, 'r') as f:
+                    reader = csv.reader(f)
+                    data = [row for row in reader]
+            return render_template("gadgets.html", data=data)
+
+        # data is the user profile csv content
+        return render_template("gadgets.html", data=data)
+    except IndexError:
+        return render_template("login.html")
+
+@app.route('/delet-gadget', methods=["GET", "POST"])
+def delet():
+    if request.metghod == "POST":
+         # get the user's csv file
+        current_user = currentUser[0]
+        user_csv_key = f"{current_user}.csv"
+    
+        # get the gadget to delete from the form
+        gadget_to_delete = request.form['gadget']
+
+        # find the row index of the gadget to delete
+        with open(user_csv_key, 'r') as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if row[0] == gadget_to_delete:
+                    row_index = i
+                    break
+
+        # Remove the row from the data
+        with open(user_csv_key, 'r') as f:
+            reader = csv.reader(f)
+            data = list(reader)
+        del data[row_index]
+
+        # Write the updated data back to the file
+        with open(user_csv_key, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(data)
+            return render_template("gadgets.html")
+    return render_template("delet-gadget.html")
+
+
 
 # manage account settings
 @app.route('/account', methods=["GET", "POST"])
